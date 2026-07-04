@@ -56,7 +56,9 @@ for TDD.*
    **PDF**, **CSV**, and **HTML**. Python has the widest, most battle-tested
    parsers for each — including OCR fallback for scanned documents.
 3. **Politeness & compliance are easy to centralize** (robots, rate limits,
-   retries, provenance) — see this repo's `connectors/base.py`.
+   retries, provenance) — see this repo's
+   `packages/pipeline/src/cartoonomics/connectors/base.py` and its dedicated
+   `robots.py` (`robots.txt` allow/deny + crawl-delay).
 
 ### Source-specific notes (foundational)
 - **NSE:** heavy anti-bot; the site sets cookies via a browser session. Prefer
@@ -77,7 +79,7 @@ for TDD.*
 
 The pivotal architectural decision is a **stable, versioned, validated exchange
 format** between analysis and rendering: **CartoonSpec** (implemented in
-`src/cartoonomics/format/cartoon_spec.py`).
+`packages/pipeline/src/cartoonomics/format/cartoon_spec.py`).
 
 - **Serialization:** JSON. **Schema/validation:** pydantic v2 (Python side);
   the same JSON is consumed by the TypeScript renderer. A JSON Schema can be
@@ -149,8 +151,9 @@ evolve independently, and the format is what regression tests guard.
 
 A runnable, dependency-light **vertical slice** of the stack above:
 
-- Polite, provenance-capturing **connector base** (+ offline fixture connector,
-  + honest NSE/BSE reference connectors).
+- Polite, `robots.txt`-aware, provenance-capturing **connector base** (allow/deny
+  + advertised crawl-delay, in a dedicated `connectors/robots.py`) with an offline
+  fixture connector and honest NSE/BSE reference connectors.
 - **PDF and delimited** document parsing into a canonical intermediate.
 - **XIRR** metric (pure Python) and a **cashflow → CartoonSpec** builder.
 - The **CartoonSpec** pydantic contract (the predefined format).

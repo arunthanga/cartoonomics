@@ -13,7 +13,7 @@ cartoonomics/
 ├─ packages/
 │  ├─ pipeline/       # Python library: connectors, parsing, analysis, pipeline wiring.
 │  │  ├─ src/cartoonomics/
-│  │  │  ├─ connectors/   # polite, provenance-capturing source connectors (FR-1.2/1.3)
+│  │  │  ├─ connectors/   # polite, robots.txt-aware, provenance-capturing source connectors (FR-1.2/1.3)
 │  │  │  ├─ parsing/      # raw doc -> canonical ParsedFinancials (FR-1.5)
 │  │  │  ├─ analysis/     # metrics (XIRR) + CartoonSpec builders (§7.2)
 │  │  │  ├─ format/       # CartoonSpec pydantic models (the contract source of truth)

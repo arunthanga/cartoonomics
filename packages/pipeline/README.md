@@ -10,7 +10,7 @@ workspace growth path).
 
 ```text
 src/cartoonomics/
-├─ connectors/   # BaseConnector (polite fetch + provenance), fixture, NSE/BSE (FR-1.2/1.3)
+├─ connectors/   # BaseConnector (polite fetch + provenance), robots (robots.txt policy), fixture, NSE/BSE (FR-1.2/1.3)
 ├─ parsing/      # PDF + delimited -> canonical ParsedFinancials (FR-1.5)
 ├─ analysis/     # metrics (XIRR) + cashflow -> CartoonSpec builder (§7.2, FR-4.1)
 ├─ format/       # CartoonSpec pydantic models — the source of truth for the contract
