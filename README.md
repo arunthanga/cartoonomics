@@ -29,7 +29,7 @@ apps/       # deployables:  api/ (FastAPI, scaffold) · web/ (cartoon renderer)
 services/   # workers:       orchestrator/ (Prefect flows, scaffold)
 packages/   # libraries:     pipeline/ (the Python data pipeline) · contracts/ (CartoonSpec, scaffold)
 infra/      # docker / terraform / k8s  (scaffold)
-docs/       # adr/ + architecture/
+docs/       # knowledge base: adr/ + architecture/ (start at docs/README.md)
 scripts/    # dev/ops helpers
 ```
 
