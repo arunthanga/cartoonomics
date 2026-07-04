@@ -64,7 +64,13 @@ class BaseConnector(ABC):
 
     @abstractmethod
     def _fetch_bytes(self, url: str) -> tuple[bytes, str]:
-        """Return ``(content, media_type)`` for ``url``. Implemented per source."""
+        """Return ``(content, media_type)`` for ``url``. Implemented per source.
+
+        Connectors that need to POST (e.g. a form-driven disclosure portal) accept
+        optional ``data``/``headers`` keyword arguments; :meth:`fetch` only forwards
+        them when a caller supplies them, so plain GET connectors keep the simple
+        ``(self, url)`` signature.
+        """
 
     def _respect_rate_limit(
         self, *, interval: float | None = None, sleep=time.sleep, now=time.monotonic
@@ -97,13 +103,31 @@ class BaseConnector(ABC):
         self._robots_cache[robots_url] = policy
         return policy
 
-    def fetch(self, url: str, *, sleep=time.sleep, now=time.monotonic) -> RawArtifact:
+    def fetch(
+        self,
+        url: str,
+        *,
+        data: bytes | None = None,
+        headers: dict[str, str] | None = None,
+        sleep=time.sleep,
+        now=time.monotonic,
+    ) -> RawArtifact:
         """Politely fetch ``url`` with retry/backoff and capture provenance.
 
         When ``respect_robots`` is set, the source's ``robots.txt`` is consulted
         first: a disallowed path raises :class:`RobotsDisallowed`, and an
         advertised crawl delay raises the effective rate-limit interval.
+
+        ``data``/``headers`` are optional: when given (e.g. for a POST form
+        submission) they are forwarded to :meth:`_fetch_bytes`. When omitted the
+        call is a plain GET, keeping simpler connectors unchanged.
         """
+        fetch_kwargs: dict[str, object] = {}
+        if data is not None:
+            fetch_kwargs["data"] = data
+        if headers is not None:
+            fetch_kwargs["headers"] = headers
+
         interval = self.min_interval_s
         if self.respect_robots:
             policy = self._robots_policy_for(url)
@@ -119,7 +143,7 @@ class BaseConnector(ABC):
         last_error: Exception | None = None
         for attempt in range(self.max_retries):
             try:
-                content, media_type = self._fetch_bytes(url)
+                content, media_type = self._fetch_bytes(url, **fetch_kwargs)
                 break
             except Exception as exc:  # noqa: BLE001 - retried and re-raised below
                 last_error = exc

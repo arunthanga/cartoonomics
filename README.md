@@ -37,7 +37,7 @@ The working vertical slice lives in `packages/pipeline` and `apps/web`:
 
 | Path | Role |
 |---|---|
-| `packages/pipeline/src/cartoonomics/connectors/` | Polite, `robots.txt`-aware, provenance-capturing source connectors (`base`, `robots`, offline `fixture`, reference `NSE`/`BSE`). |
+| `packages/pipeline/src/cartoonomics/connectors/` | Polite, `robots.txt`-aware, provenance-capturing source connectors (`base`, `robots`, offline `fixture`, reference `NSE`/`BSE`, and the `SEBI PMS` monthly-report connector). |
 | `packages/pipeline/src/cartoonomics/parsing/` | Read PDF (pdfplumber) and delimited documents into a canonical intermediate. |
 | `packages/pipeline/src/cartoonomics/analysis/` | Metrics (XIRR) and the cashflow → CartoonSpec builder. |
 | `packages/pipeline/src/cartoonomics/format/` | **CartoonSpec** — the predefined, versioned exchange format (pydantic). |
@@ -110,6 +110,24 @@ run for feedback only.
   `python packages/pipeline/tests/regression/_regen_golden.py`.
 
 ---
+
+## SEBI PMS monthly reports (real connector)
+
+Scrape SEBI's Portfolio Manager Monthly Reports (PMR) — AUM, client count, and
+per-strategy TWRR performance — navigating each Portfolio Manager for each month.
+The report is **HTML, not a PDF**; the connector enumerates managers/years/months
+from the landing page and fetches each report via the form POST, storing the raw
+HTML immutably and a parsed JSON alongside it (raw-then-parsed, idempotent,
+provenance-captured). See the source register in
+[`docs/compliance/source-register.md`](docs/compliance/source-register.md).
+
+```bash
+python -m cartoonomics.sebi_pms --dry-run                      # enumerate only
+python -m cartoonomics.sebi_pms --out ./sebi_pms_data \
+    --pm INP000006457 --years 2025 --months 3                  # one report
+python -m cartoonomics.sebi_pms --out ./sebi_pms_data \
+    --years 2025 --months 3 --limit 5 --max-reports 5          # polite, capped walk
+```
 
 ## Notes
 
