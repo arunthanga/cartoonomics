@@ -37,7 +37,7 @@ The working vertical slice lives in `packages/pipeline` and `apps/web`:
 
 | Path | Role |
 |---|---|
-| `packages/pipeline/src/cartoonomics/connectors/` | Polite, provenance-capturing source connectors (`base`, offline `fixture`, reference `NSE`/`BSE`). |
+| `packages/pipeline/src/cartoonomics/connectors/` | Polite, `robots.txt`-aware, provenance-capturing source connectors (`base`, `robots`, offline `fixture`, reference `NSE`/`BSE`). |
 | `packages/pipeline/src/cartoonomics/parsing/` | Read PDF (pdfplumber) and delimited documents into a canonical intermediate. |
 | `packages/pipeline/src/cartoonomics/analysis/` | Metrics (XIRR) and the cashflow → CartoonSpec builder. |
 | `packages/pipeline/src/cartoonomics/format/` | **CartoonSpec** — the predefined, versioned exchange format (pydantic). |
@@ -116,5 +116,8 @@ run for feedback only.
 - **Compliance is a hard gate.** No real connector ships without clearing
   `requirements.md` §17 (ToS/robots, rate limits, redistribution rights, source
   register). The NSE/BSE connectors here implement the *polite pattern* but are
-  not wired to fetch by default.
+  not wired to fetch by default. HTTP connectors honour each source's
+  `robots.txt` (allow/deny + advertised crawl delay) before fetching (FR-1.2) —
+  the same "good citizen" posture as document-first research tools such as
+  [alpha-analyst.com](https://alpha-analyst.com).
 - **Not investment advice** — research & education only (§16).
