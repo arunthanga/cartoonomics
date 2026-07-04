@@ -11,6 +11,7 @@ from cartoonomics.parsing.documents import (
     parse_financials,
     parse_pdf,
 )
+from cartoonomics.parsing.amfi import NavFile, NavRecord, parse_nav_file
 from cartoonomics.parsing.sebi_pms import (
     PerformanceRow,
     PmsMonthlyReport,
@@ -26,4 +27,7 @@ __all__ = [
     "parse_pms_report",
     "PmsMonthlyReport",
     "PerformanceRow",
+    "parse_nav_file",
+    "NavFile",
+    "NavRecord",
 ]

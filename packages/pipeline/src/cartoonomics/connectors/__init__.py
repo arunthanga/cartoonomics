@@ -6,6 +6,7 @@ provenance (FR-1.3), and yields an immutable :class:`RawArtifact` (FR-1.5).
 Connectors are isolated so one source breaking cannot take down others (TA-3).
 """
 
+from cartoonomics.connectors.amfi import AmfiConnector
 from cartoonomics.connectors.base import BaseConnector, RawArtifact
 from cartoonomics.connectors.fixture import FixtureConnector
 from cartoonomics.connectors.robots import RobotsDisallowed, RobotsPolicy
@@ -19,4 +20,5 @@ __all__ = [
     "RobotsDisallowed",
     "SebiPmsConnector",
     "PortfolioManager",
+    "AmfiConnector",
 ]
