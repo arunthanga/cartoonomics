@@ -19,7 +19,15 @@ from cartoonomics.connectors.base import USER_AGENT, BaseConnector
 
 
 class _HttpConnector(BaseConnector):
-    """Shared HTTP fetch via stdlib urllib with an identifying user agent."""
+    """Shared HTTP fetch via stdlib urllib with an identifying user agent.
+
+    HTTP connectors honour ``robots.txt`` by default (FR-1.2): the base class
+    consults each origin's rules before fetching and obeys any crawl delay.
+    """
+
+    def __init__(self, **kwargs) -> None:
+        kwargs.setdefault("respect_robots", True)
+        super().__init__(**kwargs)
 
     def _fetch_bytes(self, url: str) -> tuple[bytes, str]:  # pragma: no cover - network
         request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
