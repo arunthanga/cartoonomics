@@ -15,6 +15,7 @@ cartoonomics/
 │  │  ├─ src/cartoonomics/
 │  │  │  ├─ connectors/   # polite, robots.txt-aware, provenance-capturing source connectors (FR-1.2/1.3)
 │  │  │  ├─ parsing/      # raw doc -> canonical ParsedFinancials (FR-1.5)
+│  │  │  ├─ canonical/    # canonical financial data schema — screener.in-style (§13, ADR-0003)
 │  │  │  ├─ analysis/     # metrics (XIRR) + CartoonSpec builders (§7.2)
 │  │  │  ├─ format/       # CartoonSpec pydantic models (the contract source of truth)
 │  │  │  ├─ pipeline.py   # end-to-end wiring: scrape -> parse -> analyze -> spec
@@ -43,6 +44,7 @@ cartoonomics/
 |---|---|
 | a new data source (exchange/AMC) | `packages/pipeline/src/cartoonomics/connectors/` |
 | a new document parser | `packages/pipeline/src/cartoonomics/parsing/` |
+| a new canonical data field/entity (§13) | `packages/pipeline/src/cartoonomics/canonical/` |
 | a new metric (liquidity, risk, tax…) | `packages/pipeline/src/cartoonomics/analysis/` |
 | a new cartoon type / field | `packages/pipeline/src/cartoonomics/format/` (then regen the contract) |
 | an HTTP endpoint | `apps/api/` |

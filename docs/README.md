@@ -11,6 +11,7 @@ truth); this folder records the engineering decisions and the day-to-day map.
 |---|---|---|
 | Architecture decisions | [`adr/0001-technology-stack.md`](adr/0001-technology-stack.md) | Which stack, and why (resolves `requirements.md` §19 Q5). |
 | Architecture decisions | [`adr/0002-repository-structure.md`](adr/0002-repository-structure.md) | Why the repo is a monorepo, and how the folders are partitioned. |
+| Architecture decisions | [`adr/0003-canonical-data-model.md`](adr/0003-canonical-data-model.md) | The screener.in-style canonical data schema (resolves `requirements.md` §13 fields). |
 | Architecture reference | [`architecture/repository-layout.md`](architecture/repository-layout.md) | "Where does X go?" — the day-to-day layout map. |
 
 ## How this fits together
