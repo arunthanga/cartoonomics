@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cartoonomics — Cashflow Cartoon</title>
+  <link rel="stylesheet" href="cartoon.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="app__header">
+      <h1 id="title">Loading cartoon…</h1>
+      <p id="subtitle" class="app__subtitle"></p>
+    </header>
+
+    <section class="controls" aria-label="View controls">
+      <button id="toggle-motion" type="button" aria-pressed="false">Reduce motion</button>
+      <button id="toggle-numbers" type="button" aria-pressed="false">Show the numbers</button>
+      <button id="replay" type="button">Replay ▶</button>
+    </section>
+
+    <!-- The cartoon stage. Its accessible description comes from the spec. -->
+    <section id="stage" class="stage" role="img" aria-label="Cashflow cartoon">
+      <svg id="scene" viewBox="0 0 900 520" preserveAspectRatio="xMidYMid meet"></svg>
+    </section>
+
+    <section class="narrative" aria-label="Plain-language summary">
+      <ul id="narrative"></ul>
+    </section>
+
+    <!-- "Show the numbers" equivalent (FR-6.2 / A11Y-2). -->
+    <section id="numbers" class="numbers" hidden>
+      <table>
+        <caption id="table-caption"></caption>
+        <thead><tr><th scope="col">Line item</th><th scope="col">Amount</th></tr></thead>
+        <tbody id="numbers-body"></tbody>
+      </table>
+    </section>
+
+    <footer id="provenance" class="provenance" aria-label="Source and trust"></footer>
+  </main>
+
+  <script src="cartoon.js"></script>
+</body>
+</html>

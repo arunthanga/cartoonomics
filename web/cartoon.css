@@ -1,0 +1,98 @@
+:root {
+  --bg: #0f1226;
+  --panel: #191d3a;
+  --ink: #f4f6ff;
+  --muted: #a7adcf;
+  --inflow: #35d29a;
+  --outflow: #ff7a7a;
+  --neutral: #ffcf5c;
+  --accent: #7c8cff;
+  --radius: 18px;
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: radial-gradient(1200px 600px at 20% -10%, #232a55 0%, var(--bg) 60%);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+.app { max-width: 980px; margin: 0 auto; padding: 28px 20px 60px; }
+
+.app__header h1 { margin: 0 0 4px; font-size: clamp(22px, 4vw, 34px); }
+.app__subtitle { margin: 0; color: var(--muted); font-size: 16px; }
+
+.controls { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
+.controls button {
+  background: var(--panel);
+  color: var(--ink);
+  border: 1px solid #2c3260;
+  border-radius: 999px;
+  padding: 9px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform .12s ease, background .12s ease;
+}
+.controls button:hover { transform: translateY(-1px); background: #222750; }
+.controls button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #0f1226; }
+.controls button:focus-visible { outline: 3px solid var(--neutral); outline-offset: 2px; }
+
+.stage {
+  background: linear-gradient(180deg, #14183200, #12163080);
+  border: 1px solid #262b52;
+  border-radius: var(--radius);
+  padding: 8px;
+}
+#scene { width: 100%; height: auto; display: block; }
+
+/* Cartoon primitives */
+.node-bubble { filter: drop-shadow(0 6px 14px rgba(0,0,0,.35)); }
+.node-emoji { font-size: 34px; }
+.node-label { fill: var(--ink); font-size: 15px; font-weight: 600; }
+.node-value { fill: var(--muted); font-size: 13px; }
+
+.flow-path { fill: none; stroke-width: 8; stroke-linecap: round; opacity: .35; }
+.flow-inflow { stroke: var(--inflow); }
+.flow-outflow { stroke: var(--outflow); }
+.flow-neutral { stroke: var(--neutral); }
+
+.coin { font-size: 20px; }
+.flow-tag { fill: var(--muted); font-size: 12px; }
+
+/* Direction is never colour-only: a glyph reinforces it (A11Y-3). */
+.dir-glyph { font-size: 15px; font-weight: 700; }
+
+.narrative ul { list-style: none; padding: 0; margin: 22px 0 0; display: grid; gap: 10px; }
+.narrative li {
+  background: var(--panel);
+  border-left: 4px solid var(--accent);
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.numbers { margin-top: 22px; background: var(--panel); border-radius: var(--radius); padding: 8px 16px 16px; }
+.numbers table { width: 100%; border-collapse: collapse; }
+.numbers caption { text-align: left; color: var(--muted); padding: 10px 0; font-style: italic; }
+.numbers th, .numbers td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #2a2f58; }
+.numbers td.amount { text-align: right; font-variant-numeric: tabular-nums; }
+.amount--neg { color: var(--outflow); }
+.amount--pos { color: var(--inflow); }
+
+.provenance {
+  margin-top: 26px;
+  color: var(--muted);
+  font-size: 13px;
+  border-top: 1px solid #262b52;
+  padding-top: 14px;
+}
+.provenance a { color: var(--accent); }
+
+.error { color: var(--outflow); background: var(--panel); padding: 16px; border-radius: 12px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .controls button { transition: none; }
+}
