@@ -28,8 +28,18 @@ _FALSY = {"0", "false", "no", "off", "disabled"}
 
 
 def repo_root() -> Path:
-    """Return the repository root (two levels up from this file)."""
-    return Path(__file__).resolve().parents[2]
+    """Return the repository root (the ancestor containing ``.git``).
+
+    Walking up to the ``.git`` marker keeps the ``.tdd-mode`` toggle at the true
+    repository root regardless of how deep this package is nested (e.g.
+    ``packages/pipeline/src/cartoonomics``). Falls back to the package root if no
+    marker is found (e.g. when installed as a wheel).
+    """
+    here = Path(__file__).resolve()
+    for parent in here.parents:
+        if (parent / ".git").exists():
+            return parent
+    return here.parents[2]
 
 
 def _parse_bool(value: str) -> bool | None:

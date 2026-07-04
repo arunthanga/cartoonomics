@@ -1,5 +1,5 @@
 PYTHON ?= python3
-export PYTHONPATH := src
+export PYTHONPATH := packages/pipeline/src
 
 .PHONY: help install tdd-on tdd-off tdd-status test test-unit test-regression demo clean
 
@@ -12,7 +12,7 @@ help:
 	@echo "  test             Run unit + regression suites (honours TDD mode)"
 	@echo "  test-unit        Run only the unit suite"
 	@echo "  test-regression  Run only the regression suite"
-	@echo "  demo             Regenerate web/cartoon_spec.json from the sample filing"
+	@echo "  demo             Regenerate apps/web/cartoon_spec.json from the sample filing"
 
 install:
 	$(PYTHON) -m pip install --user -e ".[dev]"
@@ -36,11 +36,11 @@ test-regression:
 	bash scripts/run_tests.sh regression
 
 demo:
-	$(PYTHON) -m cartoonomics.pipeline --out web/cartoon_spec.json
+	$(PYTHON) -m cartoonomics.pipeline --out apps/web/cartoon_spec.json
 
 serve: demo
 	@echo "Serving the cartoon at http://localhost:8000 (Ctrl-C to stop)"
-	cd web && $(PYTHON) -m http.server 8000
+	cd apps/web && $(PYTHON) -m http.server 8000
 
 clean:
 	rm -rf .pytest_cache .coverage htmlcov **/__pycache__
