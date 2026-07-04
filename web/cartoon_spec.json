@@ -1,0 +1,126 @@
+{
+  "spec_version": "1.0.0",
+  "cartoon_type": "cashflow",
+  "title": "Acme Industries Ltd — Cash Flow",
+  "subtitle": "FY2024",
+  "currency": "INR",
+  "unit": "INR_CRORE",
+  "entity_name": "Acme Industries Ltd",
+  "entity_identifier": "ACME",
+  "nodes": [
+    {
+      "id": "cash",
+      "label": "Cash Pool",
+      "value": 350.0,
+      "role": "neutral",
+      "icon": "coins"
+    },
+    {
+      "id": "operating",
+      "label": "Operating",
+      "value": 1850.0,
+      "role": "inflow",
+      "icon": "gears"
+    },
+    {
+      "id": "investing",
+      "label": "Investing",
+      "value": 1200.0,
+      "role": "outflow",
+      "icon": "seedling"
+    },
+    {
+      "id": "financing",
+      "label": "Financing",
+      "value": 300.0,
+      "role": "outflow",
+      "icon": "bank"
+    },
+    {
+      "id": "net",
+      "label": "Net Change in Cash",
+      "value": 350.0,
+      "role": "inflow",
+      "icon": "delta"
+    }
+  ],
+  "flows": [
+    {
+      "source": "operating",
+      "target": "cash",
+      "amount": 1850.0,
+      "direction": "inflow",
+      "label": "Operating: ₹1,850 cr"
+    },
+    {
+      "source": "cash",
+      "target": "investing",
+      "amount": 1200.0,
+      "direction": "outflow",
+      "label": "Investing: ₹1,200 cr"
+    },
+    {
+      "source": "cash",
+      "target": "financing",
+      "amount": 300.0,
+      "direction": "outflow",
+      "label": "Financing: ₹300 cr"
+    },
+    {
+      "source": "cash",
+      "target": "net",
+      "amount": 350.0,
+      "direction": "inflow",
+      "label": "Net change: ₹350 cr"
+    }
+  ],
+  "narrative": [
+    "The business generated ₹1,850 cr from its core operations.",
+    "It invested ₹1,200 cr back into the business (outflow).",
+    "It returned ₹300 cr to lenders/shareholders (financing outflow).",
+    "Overall, the cash balance grew by ₹350 cr."
+  ],
+  "table": [
+    {
+      "label": "Net cash from operating activities",
+      "value": 1850.0,
+      "unit": "INR_CRORE"
+    },
+    {
+      "label": "Net cash used in investing activities",
+      "value": -1200.0,
+      "unit": "INR_CRORE"
+    },
+    {
+      "label": "Net cash from financing activities",
+      "value": -300.0,
+      "unit": "INR_CRORE"
+    },
+    {
+      "label": "Net increase in cash and cash equivalents",
+      "value": 350.0,
+      "unit": "INR_CRORE"
+    }
+  ],
+  "provenance": {
+    "source": "BSE",
+    "source_url": "sample_cashflow.csv",
+    "fetched_at": "2026-07-04T09:25:21.923133Z",
+    "source_hash": "c9bcd7c5de6a6d818ad80f106d19e46c2fbbecc39e846637ac6284c94867b1ee",
+    "filing_period": "FY2024"
+  },
+  "accessibility": {
+    "alt_text": "Cashflow cartoon for Acme Industries Ltd (FY2024). Operating ₹1,850 cr, investing ₹-1,200 cr, financing ₹-300 cr, net change ₹350 cr.",
+    "table_caption": "Cash flow line items for Acme Industries Ltd, FY2024."
+  },
+  "animation": {
+    "duration_ms": 1200,
+    "reduced_motion_ok": true,
+    "sequence": [
+      "operating->cash",
+      "cash->investing",
+      "cash->financing",
+      "cash->net"
+    ]
+  }
+}

@@ -366,7 +366,7 @@ Scraping official sites carries legal and ethical obligations. **No connector sh
 - Q2. Do we need user accounts in the foundational scope, or is the simulator fully local? (Product/Eng)
 - Q3. Which gold and real-estate benchmarks are both authoritative **and** redistributable? (Compliance/Data)
 - Q4. Exact rubric weights for Liquidity and Transferability scores. (Product/Data)
-- Q5. Concrete tech stack (frontend framework, DB, animation lib) — to be fixed in an ADR. (Eng)
+- Q5. Concrete tech stack (frontend framework, DB, animation lib) — **RESOLVED** in [`docs/adr/0001-technology-stack.md`](docs/adr/0001-technology-stack.md). (Eng)
 - Q6. Tax estimation depth — how detailed before it risks looking like advice? (Product/Legal)
 
 ---
