@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+.hypothesis/
+build/
+dist/
+
+# Local TDD-mode toggle state (default is ON in code)
+.tdd-mode
+
+# Virtual envs
+.venv/
+venv/
