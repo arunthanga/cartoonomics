@@ -278,6 +278,15 @@ Core entities (fields illustrative, to be finalized in an ADR):
 
 **Invariant:** every `Metric` and `Financials`/`Holding` row must reference the `Filing`/source it came from (provenance).
 
+**Implemented schema.** The concrete, versioned field-level model — expanded to the
+depth users expect from **screener.in** and **tijorifinance.com** (Key Ratios
+snapshot, standalone/consolidated P&L, balance sheet, cash flow, ratios,
+compounded-growth tables, shareholding pattern, peer comparison, revenue-mix
+segments, operational metrics, documents, corporate actions, and derived
+metrics) — lives in `packages/pipeline/src/cartoonomics/canonical/`
+(`CompanyDataset`), with the design rationale and the site-section → model map in
+[`docs/adr/0003-canonical-data-model.md`](docs/adr/0003-canonical-data-model.md).
+
 ---
 
 ## 14. Privacy & Security

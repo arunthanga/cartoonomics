@@ -12,6 +12,7 @@ workspace growth path).
 src/cartoonomics/
 ├─ connectors/   # BaseConnector (polite fetch + provenance), robots (robots.txt policy), fixture, NSE/BSE (FR-1.2/1.3)
 ├─ parsing/      # PDF + delimited -> canonical ParsedFinancials (FR-1.5)
+├─ canonical/    # canonical financial data schema — screener.in-style (§13, ADR-0003)
 ├─ analysis/     # metrics (XIRR) + cashflow -> CartoonSpec builder (§7.2, FR-4.1)
 ├─ format/       # CartoonSpec pydantic models — the source of truth for the contract
 ├─ pipeline.py   # end-to-end wiring: scrape -> parse -> analyze -> spec
