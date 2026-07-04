@@ -112,7 +112,7 @@ cartoonomics has five product pillars. Each maps to functional requirements in �
 
 ### 6.1 Foundational vs later
 - **Foundational (must-have):** MF + equities (BSE/NSE) ingestion; XIRR + core metrics; company cashflow cartoon; personal monthly cashflow cartoon; one clean comparison page.
-- **Later:** PMS/AIF disclosure ingestion at scale, NPS, gold, real estate; lifetime simulator with unexpected-expense modeling; advisor sharing.
+- **Later:** PMS/AIF disclosure ingestion at scale, NPS, gold, real estate; lifetime simulator with unexpected-expense modeling; advisor sharing. *(An initial single-source PMS connector — SEBI monthly reports — has landed; see §7.1 "Implemented connectors".)*
 
 Phasing (no calendar estimates — see §15) is expressed in terms of subsystems and dependencies.
 
@@ -144,6 +144,18 @@ Phasing (no calendar estimates — see §15) is expressed in terms of subsystems
 - FR-1.5 **Raw-then-parsed** pipeline: store the raw artifact (PDF/HTML/CSV) immutably, then parse into structured data, so re-parsing is possible without re-fetching.
 - FR-1.6 Parsing failures are queued for review, never silently dropped. Data quality metrics are tracked (see §15.2).
 - FR-1.7 A scheduler runs connectors on cadences matching each source (e.g., NAV daily, results quarterly, shareholding quarterly).
+
+**Implemented connectors.** The polite/provenance pattern lives in
+`packages/pipeline/src/cartoonomics/connectors/` (`base` + `robots`, an offline
+`fixture`, and reference `NSE`/`BSE`). The first **PMS** source is implemented
+end-to-end: `SebiPmsConnector` navigates SEBI's Portfolio Manager Monthly Report
+portal — enumerating every registered Portfolio Manager and the available
+years/months, then fetching each monthly report — with a parser
+(`parsing/sebi_pms.py`) that extracts AUM, client count, and per-strategy TWRR
+performance, and a raw-then-parsed, idempotent, provenance-capturing scraper
+(`python -m cartoonomics.sebi_pms`). The report is **HTML, not a PDF**. Its
+source-register entry (CMP-5) is
+[`docs/compliance/source-register.md`](docs/compliance/source-register.md).
 
 ### 7.2 Analysis Engine (normalize + compute)
 
@@ -306,7 +318,7 @@ Phases are ordered by dependency, not dates.
 - **Phase B — Analysis.** XIRR, liquidity, transferability, cost, risk, tax metrics (§7.2) with reproducibility.
 - **Phase C — First cartoons.** Company cashflow cartoon (§7.4) + personal monthly cashflow cartoon (§7.5) + the design system (§10).
 - **Phase D — Comparison.** Cross-asset comparison experience (§7.3).
-- **Phase E — Breadth.** PMS/AIF disclosure ingestion, NPS, gold, real estate; lifetime simulator with unexpected-expense modeling; sharing/export.
+- **Phase E — Breadth.** PMS/AIF disclosure ingestion, NPS, gold, real estate; lifetime simulator with unexpected-expense modeling; sharing/export. *(Started: the SEBI PMS monthly-report connector is an initial Phase E slice — see §7.1.)*
 
 **Dependency notes:** B depends on A. C depends on A (and B for real numbers). D depends on B + C. E depends on A–D and is the most compliance-sensitive (§17).
 
