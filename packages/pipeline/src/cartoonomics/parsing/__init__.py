@@ -11,6 +11,11 @@ from cartoonomics.parsing.documents import (
     parse_financials,
     parse_pdf,
 )
+from cartoonomics.parsing.sebi_pms import (
+    PerformanceRow,
+    PmsMonthlyReport,
+    parse_pms_report,
+)
 
 __all__ = [
     "LineItem",
@@ -18,4 +23,7 @@ __all__ = [
     "parse_delimited",
     "parse_financials",
     "parse_pdf",
+    "parse_pms_report",
+    "PmsMonthlyReport",
+    "PerformanceRow",
 ]

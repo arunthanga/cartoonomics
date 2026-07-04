@@ -9,6 +9,7 @@ Connectors are isolated so one source breaking cannot take down others (TA-3).
 from cartoonomics.connectors.base import BaseConnector, RawArtifact
 from cartoonomics.connectors.fixture import FixtureConnector
 from cartoonomics.connectors.robots import RobotsDisallowed, RobotsPolicy
+from cartoonomics.connectors.sebi_pms import PortfolioManager, SebiPmsConnector
 
 __all__ = [
     "BaseConnector",
@@ -16,4 +17,6 @@ __all__ = [
     "FixtureConnector",
     "RobotsPolicy",
     "RobotsDisallowed",
+    "SebiPmsConnector",
+    "PortfolioManager",
 ]
