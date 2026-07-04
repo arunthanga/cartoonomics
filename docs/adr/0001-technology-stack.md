@@ -160,6 +160,10 @@ A runnable, dependency-light **vertical slice** of the stack above:
 - Polite, `robots.txt`-aware, provenance-capturing **connector base** (allow/deny
   + advertised crawl-delay, in a dedicated `connectors/robots.py`) with an offline
   fixture connector and honest NSE/BSE reference connectors.
+- A real **AMFI** connector + parser + ingestion (`python -m cartoonomics.amfi`):
+  ingests the official daily `NAVAll.txt` and the historical NAV report into
+  per-scheme NAV records with AMC + category context (official bulk feed, no
+  scraping — the foundational MF source of record).
 - A real **SEBI PMS** connector + parser + scraper (`python -m cartoonomics.sebi_pms`):
   navigates the Portfolio Manager Monthly Report portal per manager/month and
   extracts AUM, client count, and per-strategy TWRR performance (raw-then-parsed,

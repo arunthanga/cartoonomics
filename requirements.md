@@ -147,15 +147,24 @@ Phasing (no calendar estimates — see §15) is expressed in terms of subsystems
 
 **Implemented connectors.** The polite/provenance pattern lives in
 `packages/pipeline/src/cartoonomics/connectors/` (`base` + `robots`, an offline
-`fixture`, and reference `NSE`/`BSE`). The first **PMS** source is implemented
-end-to-end: `SebiPmsConnector` navigates SEBI's Portfolio Manager Monthly Report
-portal — enumerating every registered Portfolio Manager and the available
-years/months, then fetching each monthly report — with a parser
-(`parsing/sebi_pms.py`) that extracts AUM, client count, and per-strategy TWRR
-performance, and a raw-then-parsed, idempotent, provenance-capturing scraper
-(`python -m cartoonomics.sebi_pms`). The report is **HTML, not a PDF**. Its
-source-register entry (CMP-5) is
-[`docs/compliance/source-register.md`](docs/compliance/source-register.md).
+`fixture`, and reference `NSE`/`BSE`). Two real, source-of-record connectors are
+implemented end-to-end, each with a raw-then-parsed, idempotent,
+provenance-capturing ingestion CLI and a source-register entry (CMP-5) in
+[`docs/compliance/source-register.md`](docs/compliance/source-register.md):
+
+- **AMFI (mutual funds)** — `AmfiConnector` ingests AMFI's official
+  machine-readable NAV feeds (the daily `NAVAll.txt` for every scheme of every
+  AMC, and the historical NAV report for a date range), parsed
+  (`parsing/amfi.py`) into per-scheme NAV records with AMC + category context
+  (`python -m cartoonomics.amfi`). This prefers an official bulk feed over
+  scraping (FR-1.2, CMP-1/CMP-6) and is the source-of-record path for
+  §6.1's foundational MF connector.
+- **SEBI PMS** — `SebiPmsConnector` navigates SEBI's Portfolio Manager Monthly
+  Report portal (enumerating every registered Portfolio Manager and the
+  available years/months, then fetching each monthly report), parsed
+  (`parsing/sebi_pms.py`) into AUM, client count and per-strategy TWRR
+  performance (`python -m cartoonomics.sebi_pms`). The report is **HTML, not a
+  PDF**.
 
 ### 7.2 Analysis Engine (normalize + compute)
 
@@ -314,7 +323,7 @@ metrics) — lives in `packages/pipeline/src/cartoonomics/canonical/`
 
 Phases are ordered by dependency, not dates.
 
-- **Phase A — Foundations.** Canonical model (§13); one equity connector (BSE/NSE announcements + results); one MF connector (AMFI NAV + factsheet); provenance + raw/derived split.
+- **Phase A — Foundations.** Canonical model (§13); one equity connector (BSE/NSE announcements + results); one MF connector (AMFI NAV + factsheet); provenance + raw/derived split. *(Started: the AMFI NAV connector — daily + historical — has landed; see §7.1 "Implemented connectors".)*
 - **Phase B — Analysis.** XIRR, liquidity, transferability, cost, risk, tax metrics (§7.2) with reproducibility.
 - **Phase C — First cartoons.** Company cashflow cartoon (§7.4) + personal monthly cashflow cartoon (§7.5) + the design system (§10).
 - **Phase D — Comparison.** Cross-asset comparison experience (§7.3).

@@ -37,7 +37,7 @@ The working vertical slice lives in `packages/pipeline` and `apps/web`:
 
 | Path | Role |
 |---|---|
-| `packages/pipeline/src/cartoonomics/connectors/` | Polite, `robots.txt`-aware, provenance-capturing source connectors (`base`, `robots`, offline `fixture`, reference `NSE`/`BSE`, and the `SEBI PMS` monthly-report connector). |
+| `packages/pipeline/src/cartoonomics/connectors/` | Polite, `robots.txt`-aware, provenance-capturing source connectors (`base`, `robots`, offline `fixture`, reference `NSE`/`BSE`, the `AMFI` NAV connector, and the `SEBI PMS` monthly-report connector). |
 | `packages/pipeline/src/cartoonomics/parsing/` | Read PDF (pdfplumber) and delimited documents into a canonical intermediate. |
 | `packages/pipeline/src/cartoonomics/analysis/` | Metrics (XIRR) and the cashflow → CartoonSpec builder. |
 | `packages/pipeline/src/cartoonomics/format/` | **CartoonSpec** — the predefined, versioned exchange format (pydantic). |
@@ -110,6 +110,23 @@ run for feedback only.
   `python packages/pipeline/tests/regression/_regen_golden.py`.
 
 ---
+
+## AMFI mutual-fund NAVs (real connector)
+
+Ingest mutual-fund data from **AMFI** — the SEBI-recognised industry body and the
+authentic, machine-readable **source of record** for daily NAVs (no HTML scraping).
+The connector reads AMFI's official bulk feeds — the daily `NAVAll.txt` (every
+scheme of every AMC) and the historical NAV report for a date range — and a single
+header-driven parser turns both into per-scheme NAV records (ISIN, NAV, date) with
+AMC + category context. Raw-then-parsed, idempotent, provenance-captured; see the
+source register in [`docs/compliance/source-register.md`](docs/compliance/source-register.md).
+
+```bash
+python -m cartoonomics.amfi --dry-run                            # summarise today's NAV file
+python -m cartoonomics.amfi --out ./amfi_data                    # persist today's full NAVAll
+python -m cartoonomics.amfi --out ./amfi_data \
+    --from 01-Jun-2026 --to 05-Jun-2026 --mf 53                  # NAV history for one AMC
+```
 
 ## SEBI PMS monthly reports (real connector)
 

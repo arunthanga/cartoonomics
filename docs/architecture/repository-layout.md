@@ -13,12 +13,13 @@ cartoonomics/
 ├─ packages/
 │  ├─ pipeline/       # Python library: connectors, parsing, analysis, pipeline wiring.
 │  │  ├─ src/cartoonomics/
-│  │  │  ├─ connectors/   # polite, robots.txt-aware, provenance-capturing source connectors incl. SEBI PMS (FR-1.2/1.3)
-│  │  │  ├─ parsing/      # raw doc -> canonical ParsedFinancials; SEBI PMS report -> PmsMonthlyReport (FR-1.5)
+│  │  │  ├─ connectors/   # polite, robots.txt-aware, provenance-capturing source connectors incl. AMFI + SEBI PMS (FR-1.2/1.3)
+│  │  │  ├─ parsing/      # raw doc -> canonical ParsedFinancials; AMFI NAV feeds -> NavFile; SEBI PMS report -> PmsMonthlyReport (FR-1.5)
 │  │  │  ├─ canonical/    # canonical financial data schema — screener.in-style (§13, ADR-0003)
 │  │  │  ├─ analysis/     # metrics (XIRR) + CartoonSpec builders (§7.2)
 │  │  │  ├─ format/       # CartoonSpec pydantic models (the contract source of truth)
 │  │  │  ├─ pipeline.py   # end-to-end wiring: scrape -> parse -> analyze -> spec
+│  │  │  ├─ amfi.py       # AMFI NAV ingestion orchestration + CLI (python -m cartoonomics.amfi)
 │  │  │  ├─ sebi_pms.py   # SEBI PMS scrape orchestration + CLI (python -m cartoonomics.sebi_pms)
 │  │  │  ├─ config.py     # runtime config incl. switchable TDD mode
 │  │  │  └─ data/         # bundled sample fixtures (never real/licensed data)
