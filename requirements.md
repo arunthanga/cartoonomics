@@ -136,6 +136,11 @@ Phasing (no calendar estimates — see §15) is expressed in terms of subsystems
 | Gold | Recognized benchmarks (e.g., IBJA/exchange references) | Spot/benchmark price history. |
 | Real estate | Recognized indices / public govt data | Price indices, rental yields where available. |
 
+> **Source landscape.** A probed survey of *where* each asset class's data lives, whether
+> it is scrapable, and each source's compliance verdict (incl. why private OBPP aggregators
+> like GoldenPi/Fincues are avoided in favour of the exchange/RBI/SEBI origin) is maintained
+> in [`docs/research/scrapable-data-sources.md`](docs/research/scrapable-data-sources.md).
+
 **Requirements:**
 - FR-1.1 Each source has a dedicated, versioned **connector** with an explicit schema mapping to our canonical model (§13).
 - FR-1.2 Connectors must be **polite**: respect `robots.txt`, rate limits, and terms of use; identify via a proper user agent; back off on errors. Prefer official APIs / bulk downloads / RSS/announcement feeds over HTML scraping when available.

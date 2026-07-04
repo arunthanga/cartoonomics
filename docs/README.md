@@ -14,6 +14,7 @@ truth); this folder records the engineering decisions and the day-to-day map.
 | Architecture decisions | [`adr/0003-canonical-data-model.md`](adr/0003-canonical-data-model.md) | The screener.in-style canonical data schema (resolves `requirements.md` §13 fields). |
 | Architecture reference | [`architecture/repository-layout.md`](architecture/repository-layout.md) | "Where does X go?" — the day-to-day layout map. |
 | Compliance | [`compliance/source-register.md`](compliance/source-register.md) | Per-source legal basis, permitted uses, and refresh cadence (`requirements.md` §17 CMP-5). |
+| Research | [`research/scrapable-data-sources.md`](research/scrapable-data-sources.md) | Data-source landscape per asset class (MF, PMS, AIF, gold/SGB, G-secs, corporate bonds): what's scrapable and its compliance verdict. |
 
 ## How this fits together
 
