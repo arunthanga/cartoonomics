@@ -13,6 +13,7 @@ truth); this folder records the engineering decisions and the day-to-day map.
 | Architecture decisions | [`adr/0002-repository-structure.md`](adr/0002-repository-structure.md) | Why the repo is a monorepo, and how the folders are partitioned. |
 | Architecture decisions | [`adr/0003-canonical-data-model.md`](adr/0003-canonical-data-model.md) | The screener.in-style canonical data schema (resolves `requirements.md` §13 fields). |
 | Architecture reference | [`architecture/repository-layout.md`](architecture/repository-layout.md) | "Where does X go?" — the day-to-day layout map. |
+| Compliance | [`compliance/source-register.md`](compliance/source-register.md) | Per-source legal basis, permitted uses, and refresh cadence (`requirements.md` §17 CMP-5). |
 
 ## How this fits together
 

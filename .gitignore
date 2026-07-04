@@ -26,3 +26,6 @@ dist/
 .env
 .env.*
 !.env.example
+
+# Scraped source data (raw + parsed) — never commit vendor data (CMP-3)
+sebi_pms_data/
