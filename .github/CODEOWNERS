@@ -1,0 +1,25 @@
+# Ownership by top-level area. See docs/adr/0002-repository-structure.md.
+# Replace the placeholder team handles with real ones before enabling.
+
+# Product & technical single source of truth
+/requirements.md            @cartoonomics/product
+
+# Architecture decisions
+/docs/adr/                  @cartoonomics/architecture
+
+# Python data pipeline (ingestion, parsing, analysis, contract)
+/packages/pipeline/         @cartoonomics/data
+
+# The CartoonSpec contract seam
+/packages/contracts/        @cartoonomics/data @cartoonomics/frontend
+
+# Deployable applications
+/apps/api/                  @cartoonomics/backend
+/apps/web/                  @cartoonomics/frontend
+
+# Orchestration / scheduling
+/services/orchestrator/     @cartoonomics/data
+
+# Infrastructure & CI
+/infra/                     @cartoonomics/platform
+/.github/                   @cartoonomics/platform

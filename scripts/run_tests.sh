@@ -13,7 +13,7 @@ cd "$(dirname "$0")/.."
 
 SUITE="${1:-all}"
 PYTHON="${PYTHON:-python3}"
-export PYTHONPATH="src${PYTHONPATH:+:$PYTHONPATH}"
+export PYTHONPATH="packages/pipeline/src${PYTHONPATH:+:$PYTHONPATH}"
 
 case "$SUITE" in
   unit)        MARKER=(-m unit) ;;

@@ -190,7 +190,7 @@ async function boot() {
     const stage = document.getElementById("stage");
     stage.innerHTML =
       `<p class="error">Failed to load <code>cartoon_spec.json</code> (${err.message}).<br/>` +
-      `Serve this folder over HTTP, e.g. <code>python3 -m http.server</code> from the <code>web/</code> directory, ` +
+      `Serve this folder over HTTP, e.g. <code>python3 -m http.server</code> from the <code>apps/web/</code> directory, ` +
       `then open <code>http://localhost:8000</code>.</p>`;
   }
 }

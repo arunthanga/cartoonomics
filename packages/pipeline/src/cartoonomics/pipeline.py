@@ -6,7 +6,7 @@ Wires the layers together (§11 architecture). The demo uses
 
 Run as a module to regenerate the renderer's payload::
 
-    python -m cartoonomics.pipeline --out web/cartoon_spec.json
+    python -m cartoonomics.pipeline --out apps/web/cartoon_spec.json
 """
 
 from __future__ import annotations

@@ -15,3 +15,14 @@ dist/
 # Virtual envs
 .venv/
 venv/
+
+# Node / frontend (apps/web when the React app lands)
+node_modules/
+dist/
+.vite/
+*.tsbuildinfo
+
+# Local env / secrets (never commit — TA-4)
+.env
+.env.*
+!.env.example
