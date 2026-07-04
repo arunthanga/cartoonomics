@@ -21,7 +21,25 @@ with the SSOT (`requirements.md`), the SSOT wins until amended.
 | Refresh cadence | Monthly (reports are published per calendar month). Incremental: a report whose raw file already exists is skipped unless `--overwrite` (FR-1.4). |
 | Status | Connector + parser + scraper implemented and verified end-to-end on a single report. Bulk crawl is intentionally gated behind explicit `--limit`/`--max-reports` flags. |
 
-## Usage
+---
+
+| Field | Value |
+|---|---|
+| Source | AMFI — Association of Mutual Funds in India (NAV feeds) |
+| Connector | `cartoonomics.connectors.amfi.AmfiConnector` |
+| Entry points | `https://portal.amfiindia.com/spages/NAVAll.txt` (daily, all schemes) and `https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx` (history for a date range, optionally one AMC). |
+| Data captured | Per scheme/plan: scheme code, ISINs (growth / reinvestment), scheme name, NAV, date, and (history feed) repurchase/sale price — with AMC and scheme-category context attached to each record. |
+| Format | Semicolon-delimited text (**official machine-readable bulk feed — no HTML scraping**, FR-1.2/CMP-1/CMP-6). Column order differs between the daily and history feeds; a single header-driven parser handles both. |
+| `robots.txt` | Neither `www.amfiindia.com` nor `portal.amfiindia.com` serves a `robots.txt` (404 → no restrictions, treated permissively); the connector still honours `robots` by default. |
+| Access method | Plain HTTP GET with the honest research User-Agent; no session/headers needed. |
+| Politeness | Default 2 s min interval + retry/backoff. The daily file is a single request for the whole industry; callers should keep history ranges short. |
+| Provenance | Source URL, fetch timestamp, and SHA-256 content hash captured per feed and appended to `manifest.jsonl` (FR-1.3). |
+| Raw-then-parsed | Raw text stored immutably, then parsed to JSON; idempotent by NAV date for the daily feed (FR-1.4/FR-1.5). |
+| Legal basis / redistribution | AMFI is the SEBI-recognised industry body; NAV data is published for public use. Attribute AMFI and link back (CMP-4). Confirm redistribution terms before any bulk re-publication/export (CMP-3, constrains FR-3.5/FR-6.4). |
+| Refresh cadence | NAVs are published daily (business days). Incremental: a daily file already stored for its NAV date is skipped unless `--overwrite`. |
+| Status | Connector + parser + ingestion implemented and verified end-to-end (daily NAVAll and a history range). |
+
+## Usage — SEBI PMS
 
 ```bash
 # Enumerate managers/years/months without fetching anything:
@@ -32,4 +50,17 @@ python -m cartoonomics.sebi_pms --out ./sebi_pms_data --pm INP000006457 --years 
 
 # Politely walk the first 5 managers for a month, capped for safety:
 python -m cartoonomics.sebi_pms --out ./sebi_pms_data --years 2025 --months 3 --limit 5 --max-reports 5
+```
+
+## Usage — AMFI NAV
+
+```bash
+# Summarise today's full NAV file without writing anything:
+python -m cartoonomics.amfi --dry-run
+
+# Fetch + persist today's NAVAll (raw text + parsed JSON + manifest):
+python -m cartoonomics.amfi --out ./amfi_data
+
+# NAV history for a date range, scoped to one AMC (AMFI mf id):
+python -m cartoonomics.amfi --out ./amfi_data --from 01-Jun-2026 --to 05-Jun-2026 --mf 53
 ```

@@ -112,7 +112,7 @@ cartoonomics has five product pillars. Each maps to functional requirements in �
 
 ### 6.1 Foundational vs later
 - **Foundational (must-have):** MF + equities (BSE/NSE) ingestion; XIRR + core metrics; company cashflow cartoon; personal monthly cashflow cartoon; one clean comparison page.
-- **Later:** PMS/AIF disclosure ingestion at scale, NPS, gold, real estate; lifetime simulator with unexpected-expense modeling; advisor sharing.
+- **Later:** PMS/AIF disclosure ingestion at scale, NPS, gold, real estate; lifetime simulator with unexpected-expense modeling; advisor sharing. *(An initial single-source PMS connector — SEBI monthly reports — has landed; see §7.1 "Implemented connectors".)*
 
 Phasing (no calendar estimates — see §15) is expressed in terms of subsystems and dependencies.
 
@@ -136,6 +136,11 @@ Phasing (no calendar estimates — see §15) is expressed in terms of subsystems
 | Gold | Recognized benchmarks (e.g., IBJA/exchange references) | Spot/benchmark price history. |
 | Real estate | Recognized indices / public govt data | Price indices, rental yields where available. |
 
+> **Source landscape.** A probed survey of *where* each asset class's data lives, whether
+> it is scrapable, and each source's compliance verdict (incl. why private OBPP aggregators
+> like GoldenPi/Fincues are avoided in favour of the exchange/RBI/SEBI origin) is maintained
+> in [`docs/research/scrapable-data-sources.md`](docs/research/scrapable-data-sources.md).
+
 **Requirements:**
 - FR-1.1 Each source has a dedicated, versioned **connector** with an explicit schema mapping to our canonical model (§13).
 - FR-1.2 Connectors must be **polite**: respect `robots.txt`, rate limits, and terms of use; identify via a proper user agent; back off on errors. Prefer official APIs / bulk downloads / RSS/announcement feeds over HTML scraping when available.
@@ -144,6 +149,27 @@ Phasing (no calendar estimates — see §15) is expressed in terms of subsystems
 - FR-1.5 **Raw-then-parsed** pipeline: store the raw artifact (PDF/HTML/CSV) immutably, then parse into structured data, so re-parsing is possible without re-fetching.
 - FR-1.6 Parsing failures are queued for review, never silently dropped. Data quality metrics are tracked (see §15.2).
 - FR-1.7 A scheduler runs connectors on cadences matching each source (e.g., NAV daily, results quarterly, shareholding quarterly).
+
+**Implemented connectors.** The polite/provenance pattern lives in
+`packages/pipeline/src/cartoonomics/connectors/` (`base` + `robots`, an offline
+`fixture`, and reference `NSE`/`BSE`). Two real, source-of-record connectors are
+implemented end-to-end, each with a raw-then-parsed, idempotent,
+provenance-capturing ingestion CLI and a source-register entry (CMP-5) in
+[`docs/compliance/source-register.md`](docs/compliance/source-register.md):
+
+- **AMFI (mutual funds)** — `AmfiConnector` ingests AMFI's official
+  machine-readable NAV feeds (the daily `NAVAll.txt` for every scheme of every
+  AMC, and the historical NAV report for a date range), parsed
+  (`parsing/amfi.py`) into per-scheme NAV records with AMC + category context
+  (`python -m cartoonomics.amfi`). This prefers an official bulk feed over
+  scraping (FR-1.2, CMP-1/CMP-6) and is the source-of-record path for
+  §6.1's foundational MF connector.
+- **SEBI PMS** — `SebiPmsConnector` navigates SEBI's Portfolio Manager Monthly
+  Report portal (enumerating every registered Portfolio Manager and the
+  available years/months, then fetching each monthly report), parsed
+  (`parsing/sebi_pms.py`) into AUM, client count and per-strategy TWRR
+  performance (`python -m cartoonomics.sebi_pms`). The report is **HTML, not a
+  PDF**.
 
 ### 7.2 Analysis Engine (normalize + compute)
 
@@ -302,11 +328,11 @@ metrics) — lives in `packages/pipeline/src/cartoonomics/canonical/`
 
 Phases are ordered by dependency, not dates.
 
-- **Phase A — Foundations.** Canonical model (§13); one equity connector (BSE/NSE announcements + results); one MF connector (AMFI NAV + factsheet); provenance + raw/derived split.
+- **Phase A — Foundations.** Canonical model (§13); one equity connector (BSE/NSE announcements + results); one MF connector (AMFI NAV + factsheet); provenance + raw/derived split. *(Started: the AMFI NAV connector — daily + historical — has landed; see §7.1 "Implemented connectors".)*
 - **Phase B — Analysis.** XIRR, liquidity, transferability, cost, risk, tax metrics (§7.2) with reproducibility.
 - **Phase C — First cartoons.** Company cashflow cartoon (§7.4) + personal monthly cashflow cartoon (§7.5) + the design system (§10).
 - **Phase D — Comparison.** Cross-asset comparison experience (§7.3).
-- **Phase E — Breadth.** PMS/AIF disclosure ingestion, NPS, gold, real estate; lifetime simulator with unexpected-expense modeling; sharing/export.
+- **Phase E — Breadth.** PMS/AIF disclosure ingestion, NPS, gold, real estate; lifetime simulator with unexpected-expense modeling; sharing/export. *(Started: the SEBI PMS monthly-report connector is an initial Phase E slice — see §7.1.)*
 
 **Dependency notes:** B depends on A. C depends on A (and B for real numbers). D depends on B + C. E depends on A–D and is the most compliance-sensitive (§17).
 

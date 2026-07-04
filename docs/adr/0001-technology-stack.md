@@ -69,6 +69,12 @@ for TDD.*
 - **AMFI:** publishes daily NAV as a bulk text file — **no scraping needed**.
 - **SEBI/MCA:** company financials frequently available as **XBRL** — parse the
   structured form (Arelle) rather than the rendered PDF whenever possible.
+- **SEBI PMS (Portfolio Manager Monthly Report):** a form-driven portal — GET the
+  landing page to enumerate managers/years/months, then POST to retrieve each
+  report. The report is **HTML** (the Excel/XML export uses opaque SSRS
+  `TextboxNNN` names, so the labelled HTML is parsed). SEBI's WAF requires
+  browser-style `Referer`/`Origin`/`Content-Type` headers on the POST; plain
+  HTTP + the honest research user agent suffices (no browser session needed).
 
 > **Compliance is a hard gate (§17).** Prefer official APIs / bulk downloads /
 > feeds over HTML scraping; keep a source register; respect ToS & robots.
@@ -154,6 +160,14 @@ A runnable, dependency-light **vertical slice** of the stack above:
 - Polite, `robots.txt`-aware, provenance-capturing **connector base** (allow/deny
   + advertised crawl-delay, in a dedicated `connectors/robots.py`) with an offline
   fixture connector and honest NSE/BSE reference connectors.
+- A real **AMFI** connector + parser + ingestion (`python -m cartoonomics.amfi`):
+  ingests the official daily `NAVAll.txt` and the historical NAV report into
+  per-scheme NAV records with AMC + category context (official bulk feed, no
+  scraping — the foundational MF source of record).
+- A real **SEBI PMS** connector + parser + scraper (`python -m cartoonomics.sebi_pms`):
+  navigates the Portfolio Manager Monthly Report portal per manager/month and
+  extracts AUM, client count, and per-strategy TWRR performance (raw-then-parsed,
+  idempotent, provenance-captured; source register under `docs/compliance/`).
 - **PDF and delimited** document parsing into a canonical intermediate.
 - **XIRR** metric (pure Python) and a **cashflow → CartoonSpec** builder.
 - The **CartoonSpec** pydantic contract (the predefined format).

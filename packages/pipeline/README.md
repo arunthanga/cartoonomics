@@ -10,12 +10,14 @@ workspace growth path).
 
 ```text
 src/cartoonomics/
-├─ connectors/   # BaseConnector (polite fetch + provenance), robots (robots.txt policy), fixture, NSE/BSE (FR-1.2/1.3)
-├─ parsing/      # PDF + delimited -> canonical ParsedFinancials (FR-1.5)
+├─ connectors/   # BaseConnector (polite fetch + provenance), robots (robots.txt policy), fixture, NSE/BSE, AMFI, SEBI PMS (FR-1.2/1.3)
+├─ parsing/      # PDF + delimited -> canonical ParsedFinancials; AMFI NAV feeds -> NavFile; SEBI PMS report -> PmsMonthlyReport (FR-1.5)
 ├─ canonical/    # canonical financial data schema — screener.in-style (§13, ADR-0003)
 ├─ analysis/     # metrics (XIRR) + cashflow -> CartoonSpec builder (§7.2, FR-4.1)
 ├─ format/       # CartoonSpec pydantic models — the source of truth for the contract
 ├─ pipeline.py   # end-to-end wiring: scrape -> parse -> analyze -> spec
+├─ amfi.py       # AMFI NAV ingestion orchestration + CLI (python -m cartoonomics.amfi)
+├─ sebi_pms.py   # SEBI PMS scrape orchestration + CLI (python -m cartoonomics.sebi_pms)
 ├─ config.py     # runtime config incl. switchable TDD mode
 ├─ tdd.py        # TDD mode CLI (python -m cartoonomics.tdd on|off|status)
 └─ data/         # bundled sample fixtures (never real/licensed data — §17)

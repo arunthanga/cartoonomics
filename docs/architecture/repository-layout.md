@@ -13,12 +13,14 @@ cartoonomics/
 ├─ packages/
 │  ├─ pipeline/       # Python library: connectors, parsing, analysis, pipeline wiring.
 │  │  ├─ src/cartoonomics/
-│  │  │  ├─ connectors/   # polite, robots.txt-aware, provenance-capturing source connectors (FR-1.2/1.3)
-│  │  │  ├─ parsing/      # raw doc -> canonical ParsedFinancials (FR-1.5)
+│  │  │  ├─ connectors/   # polite, robots.txt-aware, provenance-capturing source connectors incl. AMFI + SEBI PMS (FR-1.2/1.3)
+│  │  │  ├─ parsing/      # raw doc -> canonical ParsedFinancials; AMFI NAV feeds -> NavFile; SEBI PMS report -> PmsMonthlyReport (FR-1.5)
 │  │  │  ├─ canonical/    # canonical financial data schema — screener.in-style (§13, ADR-0003)
 │  │  │  ├─ analysis/     # metrics (XIRR) + CartoonSpec builders (§7.2)
 │  │  │  ├─ format/       # CartoonSpec pydantic models (the contract source of truth)
 │  │  │  ├─ pipeline.py   # end-to-end wiring: scrape -> parse -> analyze -> spec
+│  │  │  ├─ amfi.py       # AMFI NAV ingestion orchestration + CLI (python -m cartoonomics.amfi)
+│  │  │  ├─ sebi_pms.py   # SEBI PMS scrape orchestration + CLI (python -m cartoonomics.sebi_pms)
 │  │  │  ├─ config.py     # runtime config incl. switchable TDD mode
 │  │  │  └─ data/         # bundled sample fixtures (never real/licensed data)
 │  │  └─ tests/           # unit/ + regression/ (regression guards the contract)
@@ -29,7 +31,8 @@ cartoonomics/
 │  └─ k8s/            # deployment manifests / Helm charts
 ├─ docs/
 │  ├─ adr/            # architecture decision records
-│  └─ architecture/   # this file + diagrams
+│  ├─ architecture/   # this file + diagrams
+│  └─ compliance/     # per-source register: legal basis, permitted uses, cadence (§17 CMP-5)
 ├─ scripts/           # repo-level dev/ops helpers (run_tests.sh, ...)
 ├─ .github/           # CI/CD workflows, issue/PR templates, CODEOWNERS, dependabot
 ├─ requirements.md    # product & technical single source of truth
@@ -52,6 +55,7 @@ cartoonomics/
 | a cartoon UI component | `apps/web/src/components/` |
 | a Dockerfile / compose / IaC | `infra/` |
 | an architecture decision | `docs/adr/NNNN-*.md` |
+| a data-source compliance entry (§17 CMP-5) | `docs/compliance/source-register.md` |
 | a repo-wide dev script | `scripts/` |
 
 ## Dependency direction (enforced by convention, see ADR-0002 §4)
